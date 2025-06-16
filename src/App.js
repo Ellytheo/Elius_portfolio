@@ -868,6 +868,7 @@ export default function App() {
           </section>
         )}
 
+
         {activeSection === 'contact' && (
           <section aria-label="Contact information" id="contact" className='p-3'>
             <h2 className="section-title">Contact Me</h2>
