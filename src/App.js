@@ -52,8 +52,8 @@ const skillsData = [
   { name: 'TypeScript', level: 80 },
   { name: 'GraphQL', level: 75 },
   { name: 'CSS3 & HTML5', level: 100 },
-  { name: 'Docker', level: 70 },
-  { name: 'AWS', level: 65 }
+  { name: 'GDscripting', level: 70 },
+  { name: 'Android Studio', level: 75 }
 ];
 
 export default function App() {
