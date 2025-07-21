@@ -240,7 +240,7 @@ export default function App() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 40px;
+          gap: 10px;
           z-index: 2000;
           padding: var(--spacing-lg);
           animation: fadeInScale 0.3s ease forwards;
