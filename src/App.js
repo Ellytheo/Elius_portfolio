@@ -233,14 +233,14 @@ export default function App() {
           position: fixed;
           top: 0;
           right: 0;
-          height: 50vh;
+          height: 60vh;
           width: 50vw;
           background-color: var(--color-bg-alt);
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 1px;
+          gap: 8px;
           z-index: 2000;
           padding: var(--spacing-lg);
           animation: fadeInScale 0.3s ease forwards;
