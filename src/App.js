@@ -245,7 +245,7 @@ export default function App() {
           padding: var(--spacing-lg);
           animation: fadeInScale 0.3s ease forwards;
           font-size: 1.5rem;
-          border-radius:20px;
+          border-radius:5px;
         }
 
         @keyframes fadeInScale {
