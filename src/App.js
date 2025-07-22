@@ -1,3 +1,4 @@
+import DraggableSwitchButton from './DraggableSwitchButton';
 import pic from './images/pic1.jpg';
 import React, { useState, useEffect } from 'react';
 
@@ -57,12 +58,145 @@ const skillsData = [
 ];
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState('home');
-  const [menuOpen, setMenuOpen] = useState(false);
+const [activeSection, setActiveSection] = useState('home');
+const [menuOpen, setMenuOpen] = useState(false);
+// initialize mode from localStorage on first load
+const [mode, setMode] = useState(() => {
+  return localStorage.getItem('portfolio-mode') || null; // default is CLI selector
+});
+const [showModeModal, setShowModeModal] = useState(mode === null);
+
+const [theme] = useState('dark');
+
+// CLI state
+const [cliOutput, setCliOutput] = useState([
+  "> Welcome to Elius Magin CLI Portfolio",
+  "> Type `help` for available commands."
+]);
+const [cliCommand, setCliCommand] = useState('');
+const [cliHistory, setCliHistory] = useState([]);
+const [cliIndex, setCliIndex] = useState(null);
+
+const handleCliCommand = (e) => {
+  e.preventDefault();
+  const input = cliCommand.trim();
+  if (!input) return;
+
+  const args = input.split(' ');
+  const cmd = args[0].toLowerCase();
+  const newOutput = [`> ${input}`];
+  let response = [];
+
+  switch (cmd) {
+    case 'whoami':
+      response.push('Fullstack Developer | 6+ Years | JS/React/Node');
+      break;
+    case 'skills':
+      response.push(
+        'JavaScript   [##########] 90%',
+        'React        [###########] 96%',
+        'Node.js      [##########] 90%',
+        'TypeScript   [########] 80%',
+        'GraphQL      [#######] 75%'
+      );
+      break;
+    case 'projects':
+      response.push(
+        '[1] E-commerce Platform - React, Node.js, MySQL, Stripe',
+        '[2] Personal Finance Manager - React, Firebase, Chart.js',
+        '[3] Business Advertising Site - Next.js, GraphQL, Apollo'
+      );
+      break;
+    case 'contact':
+      response.push(
+        '📧 maginelius@gmail.com',
+        '💻 github.com/Ellytheo',
+        '💼 peopleperhour.com/EliusMagin'
+      );
+      break;
+    case 'ls':
+      response.push('whoami  skills  projects  contact');
+      break;
+    case 'cd':
+      response.push(`Switched to ${args[1] || 'unknown'} (not a real directory)`);
+      break;
+    case 'open':
+      response.push(`Opening project: ${args.slice(1).join(' ') || '[unspecified]'}`);
+      break;
+    case 'clear':
+      setCliOutput([]);
+      setCliCommand('');
+      return;
+    // 'exit' command clears mode and re-shows the mode modal
+case 'exit':
+  setMode(null);
+  localStorage.removeItem('portfolio-mode');
+  setShowModeModal(true); // show the mode picker again
+  return;
+
+    case 'help':
+      response.push(
+        'Available commands:',
+        '- whoami',
+        '- skills',
+        '- projects',
+        '- contact',
+        '- ls',
+        '- cd <section>',
+        '- open <project>',
+        '- clear',
+        '- exit'
+      );
+      break;
+    default:
+      response.push(`Command not found: ${cmd}`);
+  }
+
+  setCliOutput((prev) => [...prev, ...newOutput, ...response]);
+  setCliHistory((prev) => [...prev, input]);
+  setCliCommand('');
+  setCliIndex(null);
+};
+
+const handleCliHistory = (e) => {
+  if (e.key === 'ArrowUp') {
+    if (!cliHistory.length) return;
+    const newIndex = cliIndex === null ? cliHistory.length - 1 : Math.max(0, cliIndex - 1);
+    setCliCommand(cliHistory[newIndex]);
+    setCliIndex(newIndex);
+  } else if (e.key === 'ArrowDown') {
+    if (!cliHistory.length) return;
+    const newIndex = cliIndex === null ? 0 : Math.min(cliHistory.length - 1, cliIndex + 1);
+    setCliCommand(cliHistory[newIndex] || '');
+    setCliIndex(newIndex);
+  }
+};
+
+// persist mode changes to localStorage
+useEffect(() => {
+  if (mode) {
+    localStorage.setItem('portfolio-mode', mode);
+  }
+}, [mode]);
+
+
+useEffect(() => {
+  const cliElement = document.getElementById('cli-scroll');
+  if (cliElement) cliElement.scrollTop = cliElement.scrollHeight;
+}, [cliOutput]);
 
   useEffect(() => {
     loadMaterialIcons();
   }, []);
+
+
+  useEffect(() => {
+  if (showModeModal) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}, [showModeModal]);
 
   useEffect(() => {
     if (menuOpen) {
@@ -79,6 +213,8 @@ export default function App() {
 
   return (
     <>
+
+
       <style>{`
         :root {
           --color-bg: #0f172a;
@@ -98,7 +234,13 @@ export default function App() {
         * {
           box-sizing: border-box;
         }
-        
+         
+         {
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  }
         body {
           margin: 0;
           font-family: var(--font-family-sans);
@@ -727,7 +869,7 @@ export default function App() {
     display: inline-block;
     margin: 0 auto;
     box-sizing: border-box;
-  }
+}
 
   .hero-text {
     padding: 0 12px;
@@ -812,8 +954,111 @@ export default function App() {
           ))}
         </nav>
       )}
+{showModeModal && (
+  <div
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="mode-modal-title"
+    style={{
+      position: 'fixed',
+      inset: 0,
+      width: '100vw',
+      height: '100vh',
+      background: theme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.75)',
+      zIndex: 9999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <div
+      style={{
+        backgroundColor: theme === 'light' ? '#ffffff' : '#1f1f1f',
+        color: theme === 'light' ? '#111827' : '#f1f5f9',
+        padding: '32px 40px',
+        borderRadius: '12px',
+        textAlign: 'center',
+        maxWidth: '400px',
+        width: '90%',
+        boxShadow: '0 0 30px rgba(0, 255, 100, 0.4)',
+        animation: 'fadeIn 0.3s ease-out',
+      }}
+    >
+      <h2
+        id="mode-modal-title"
+        style={{
+          marginBottom: '24px',
+          fontSize: '1.5rem',
+        }}
+      >
+        Choose Interface Mode
+      </h2>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: '20px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setMode('gui');
+            setShowModeModal(false);
+          }}
+          aria-label="Switch to GUI Mode"
+          style={{
+            flex: 1,
+            minWidth: '100px',
+            padding: '12px 20px',
+            backgroundColor: '#22c55e',
+            border: 'none',
+            borderRadius: '6px',
+            color: '#000',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = '#16a34a')}
+          onMouseOut={(e) => (e.target.style.backgroundColor = '#22c55e')}
+        >
+          🌐 GUI Mode
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setMode('cli');
+            setShowModeModal(false);
+          }}
+          aria-label="Switch to CLI Mode"
+          style={{
+            flex: 1,
+            minWidth: '100px',
+            padding: '12px 20px',
+            backgroundColor: '#22c55e',
+            border: 'none',
+            borderRadius: '6px',
+            color: '#000',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = '#16a34a')}
+          onMouseOut={(e) => (e.target.style.backgroundColor = '#22c55e')}
+        >
+          💻 CLI Mode
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-      <main>
+     <main>
+  {/* GUI Mode */}
+  {mode === 'gui' && (
+    <>
+     <DraggableSwitchButton onClick={() => setShowModeModal(true)} />
         {activeSection === 'home' && (
           <section aria-label="Introduction" className="hero" id="home">
             <div className="hero-text">
@@ -947,8 +1192,90 @@ export default function App() {
             </div>
           </section>
         )}
+      </>
+  )}
+
+ {mode === 'cli' && (
+  <div
+    style={{
+      width: '100%',
+      maxWidth: '100%',
+      height: '60vh',
+      background: theme === 'dark' ? '#000' : '#f8f8f8',
+      color: theme === 'dark' ? '#0f0' : '#222',
+      fontFamily: 'monospace',
+      fontSize: '14px',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '1rem',
+      boxSizing: 'border-box',
+      borderRadius: '8px',
+      boxShadow: theme === 'dark' ? '0 0 10px #0f0a' : '0 0 10px #ccc',
+      overflow: 'hidden',
+    }}
+  >
+    {/* Output area */}
+    <div
+      id="cli-scroll"
+      style={{
+        flex: 1,
+        overflowY: 'auto',
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word',
+        marginBottom: '1rem',
+      }}
+    >
+      {cliOutput.map((line, i) => (
+        <div key={i}>{line}</div>
+      ))}
+    </div>
+
+    {/* Command input */}
+    <form
+      onSubmit={handleCliCommand}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <span>&gt;&nbsp;</span>
+      <input
+        value={cliCommand}
+        onChange={(e) => setCliCommand(e.target.value)}
+        onKeyDown={handleCliHistory}
+        autoFocus
+        style={{
+          flex: 1,
+          background: 'transparent',
+          border: 'none',
+          color: theme === 'dark' ? '#0f0' : '#222',
+          fontFamily: 'monospace',
+          fontSize: '1rem',
+          outline: 'none',
+        }}
+      />
+      {/* Blinking Cursor */}
+      <span
+        style={{
+          display: 'inline-block',
+          width: '8px',
+          height: '1rem',
+          marginLeft: '5px',
+          backgroundColor: theme === 'dark' ? '#0f0' : '#222',
+          animation: 'blink 1s steps(2, start) infinite',
+        }}
+      />
+    </form>
+
+    <p style={{ color: theme === 'dark' ? '#555' : '#666', marginTop: '0.5rem', fontSize: '12px' }}>
+      Type <code>help</code> or <code>exit</code>.
+    </p>
+  </div>
+)}
+
       </main>
     </>
   );
 }
 
+  
