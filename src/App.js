@@ -1,5 +1,8 @@
 import DraggableSwitchButton from './DraggableSwitchButton';
 import pic from './images/pic1.jpg';
+import pr2 from './images/pr=2.png';
+import pr4 from './images/pr=4.png';
+import pr1 from './images/pr=1.png';
 import React, { useState, useEffect } from 'react';
 
 const materialIconsLink = "https://fonts.googleapis.com/icon?family=Material+Icons";
@@ -20,17 +23,19 @@ const projectsData = [
     description:
       'Fullstack e-commerce application with React, Node.js, and MySqlDB, featuring real-time inventory management and payment integration.',
     image:
-      'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d8cd0570-a047-4647-b1b9-f3e37634ba5c.png',
+      pr2,
+       link: 'https://tronicsonline.vercel.app/',
     alt: 'Screenshot of E-commerce platform user interface showcasing product listings and shopping cart',
     tech: ['React', 'Node.js', 'Express', 'MySQLDB', 'Stripe']
   },
   {
     id: 2,
-    title: 'Personal Finance Manager',
+    title: 'blog sites',
     description:
-      'Financial management app with budgeting, transaction tracking, and investment portfolio visualization built using React and Firebase.',
+      'Classy blog site for luxury and inate hotels and villas including all high end perfomance on SEO and responsiveness making your business unique in the digital world.',
     image:
-      'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b45f5d56-8d0f-43ca-9cd9-abf1e68ad2cf.png',
+      pr1,
+       link: 'https://your-ads-site.example.com',
     alt: 'Interface of Personal Finance Manager showing dashboard and charts',
     tech: ['React', 'Firebase', 'Chart.js', 'Material UI']
   },
@@ -38,9 +43,10 @@ const projectsData = [
     id: 3,
     title: 'bussiness advertising Site',
     description:
-      'A scalable social platform developed with Next.js and GraphQL supporting real-time chat and infinite scrolling feed.',
+      'A scalable {portfolio} social platform developed with Next.js and GraphQL supporting real-time chat and infinite scrolling feed.',
     image:
-      'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e17bc224-37af-4be7-ba14-213995330692.png',
+      pr4,
+       link: 'https://eliusportfolio.vercel.app/',
     alt: 'Screenshot of social networking site feed and messaging panel',
     tech: ['Next.js', 'GraphQL', 'Apollo', 'MySQL']
   }
@@ -676,7 +682,7 @@ useEffect(() => {
         .project-image img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
           transition: transform 0.4s ease;
           display: block;
         }
@@ -1168,6 +1174,19 @@ useEffect(() => {
                     >
                       {project.description}
                     </p>
+                     <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                     <button className="view-button" style={{
+          marginTop: '6px',
+          padding: '8px 16px',
+          backgroundColor: '#22c55e',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}>
+          🔗 Visit Project
+        </button>
+      </a>
                     <div className="project-tech" aria-label="Technologies used">
                       {project.tech.map((tech) => (
                         <span key={tech} className="tech-tag" tabIndex={-1}>
