@@ -889,6 +889,7 @@ useEffect(() => {
 
       `}</style>
 
+{mode !== 'cli' && (
       <header role="banner" aria-label="Main navigation">
   <div className="logo-photo-container">
      <img
@@ -926,7 +927,7 @@ useEffect(() => {
     <span className="material-icons" aria-hidden="true">{menuOpen ? 'close' : 'menu'}</span>
   </button>
 </header>
-
+)}
       {menuOpen && (
         <nav
           className="mobile-menu"
@@ -1200,7 +1201,7 @@ useEffect(() => {
     style={{
       width: '100%',
       maxWidth: '100%',
-      height: '60vh',
+      height: '80vh',
       background: theme === 'dark' ? '#000' : '#f8f8f8',
       color: theme === 'dark' ? '#0f0' : '#222',
       fontFamily: 'monospace',
