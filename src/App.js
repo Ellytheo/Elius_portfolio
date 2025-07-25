@@ -3,6 +3,9 @@ import pic from './images/pic1.jpg';
 import pr2 from './images/pr=2.png';
 import pr4 from './images/pr=4.png';
 import pr1 from './images/pr=1.png';
+import ad1 from './images/pr1.png';
+import ad2 from './images/pr2.jpg';
+
 import React, { useState, useEffect } from 'react';
 
 const materialIconsLink = "https://fonts.googleapis.com/icon?family=Material+Icons";
@@ -26,7 +29,7 @@ const projectsData = [
       pr2,
        link: 'https://tronicsonline.vercel.app/',
     alt: 'Screenshot of E-commerce platform user interface showcasing product listings and shopping cart',
-    tech: ['React', 'Node.js', 'Express', 'MySQLDB', 'Stripe']
+    tech: ['React', 'Node.js', 'Express', 'MySQLDB', 'Analytics']
   },
   {
     id: 2,
@@ -37,7 +40,7 @@ const projectsData = [
       pr1,
        link: 'https://your-ads-site.example.com',
     alt: 'Interface of Personal Finance Manager showing dashboard and charts',
-    tech: ['React', 'Firebase', 'Chart.js', 'Material UI']
+    tech: ['React', 'Firebase', 'Javascrip', 'Material UI','MysqlDB']
   },
   {
     id: 3,
@@ -48,7 +51,29 @@ const projectsData = [
       pr4,
        link: 'https://eliusportfolio.vercel.app/',
     alt: 'Screenshot of social networking site feed and messaging panel',
-    tech: ['Next.js', 'GraphQL', 'Apollo', 'MySQL']
+    tech: ['Next.js', 'Vercel', 'React', 'Marerial UI','Bootstrap']
+  },
+    {
+    id: 4,
+    title: 'File transfer .exe',
+    description:
+      'A file transfer pc exe that allows transfer of files from pc to android devices to easen the hastle of using cable and user-friendliness.',
+    image:
+      ad1,
+       link: 'https://github.com/Ellytheo/pc-android-file-tranfer',
+    alt: 'Screenshot of social networking site feed and messaging panel',
+    tech: ['Python', 'Tkinter', 'Struct']
+  },
+    {
+    id: 5,
+    title: 'file transfer app',
+    description:
+      'A file transfer mobile app that allows transfer of files from pc to android devices to easen the hastle of using cable and user-friendliness.',
+    image:
+      ad2,
+       link: 'https://github.com/Ellytheo/file_transfer_manager',
+    alt: 'Screenshot of social networking site feed and messaging panel',
+    tech: ['Kotlin', 'Groovy', 'Xml', 'Helpers']
   }
 ];
 
